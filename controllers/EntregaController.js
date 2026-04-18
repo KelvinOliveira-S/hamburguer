@@ -1,8 +1,9 @@
 import db from "../models/index.js";
 
-const { Entrega } = db;
+const { Entrega, Pedido } = db;
 
 class EntregaController {
+
   async index(req, res) {
     try {
       const entregas = await Entrega.findAll();
@@ -29,8 +30,23 @@ class EntregaController {
 
   async store(req, res) {
     try {
-      const entrega = await Entrega.create(req.body);
+      const { pedido_id, codigo_rastreio, endereco } = req.body;
+
+      //  valida se o pedido existe
+      const pedido = await Pedido.findByPk(pedido_id);
+
+      if (!pedido) {
+        return res.status(404).json({ error: "Pedido não encontrado" });
+      }
+
+      const entrega = await Entrega.create({
+        pedido_id,
+        codigo_rastreio,
+        endereco
+      });
+
       res.status(201).json(entrega);
+
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
@@ -47,6 +63,7 @@ class EntregaController {
 
       await entrega.update(req.body);
       res.status(200).json(entrega);
+
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
@@ -63,6 +80,7 @@ class EntregaController {
 
       await entrega.destroy();
       res.status(204).send();
+
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

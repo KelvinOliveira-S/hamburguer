@@ -1,6 +1,7 @@
 import db from "../models/index.js";
 
 const { Pedido, Entrega, Avaliacao } = db;
+
 const PedidoController = {
 
   create: async (req, res) => {
@@ -11,43 +12,42 @@ const PedidoController = {
       res.status(500).json({ error: error.message });
     }
   },
- 
-  
+
   findAll: async (req, res) => {
-  try {
-    const pedidos = await Pedido.findAll({
-      include: [
-        { model: Entrega, as: 'entregas' },
-        { model: Avaliacao, as: 'avaliacoes' }
-      ]
-    });
+    try {
+      const pedidos = await Pedido.findAll({
+        include: [
+          { model: Entrega, as: 'entregas' },
+          { model: Avaliacao, as: 'avaliacoes' }
+        ]
+      });
 
-    res.status(200).json(pedidos);
+      res.status(200).json(pedidos); // 🔥 sempre retorna (mesmo vazio)
 
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-},
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
 
   findById: async (req, res) => {
-  try {
-    const pedido = await Pedido.findByPk(req.params.id, {
-      include: [
-        { model: Entrega, as: 'entregas' },
-        { model: Avaliacao, as: 'avaliacoes' }
-      ]
-    });
+    try {
+      const pedido = await Pedido.findByPk(req.params.id, {
+        include: [
+          { model: Entrega, as: 'entregas' },
+          { model: Avaliacao, as: 'avaliacoes' }
+        ]
+      });
 
-    if (pedido) {
+      if (!pedido) {
+        return res.status(404).json({ error: "Pedido não encontrado" });
+      }
+
       res.status(200).json(pedido);
-    } else {
-      res.status(404).json({ error: "Pedido não encontrado" });
-    }
 
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   }
-}
 
 };
 

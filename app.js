@@ -5,6 +5,7 @@ import categoriaRoutes from './routes/categoriaRoutes.js';
 import avaliacaoRoutes from "./routes/avaliacaoRoutes.js";
 import pedidoRoutes from "./routes/pedidosRoutes.js";
 import produtoRoutes from "./routes/produtoRoutes.js";
+import entregaRoutes from "./routes/entregaRoutes.js";
 
 const app = express();
 const port = 3000;
@@ -20,8 +21,9 @@ app.use('/categorias', categoriaRoutes);
 app.use("/avaliacoes", avaliacaoRoutes);
 app.use("/pedidos", pedidoRoutes);
 app.use("/produtos", produtoRoutes);
+app.use("/entregas", entregaRoutes);
 
-// 🔥 CONEXÃO COM BANCO
+
 sequelize.authenticate()
   .then(() => {
     console.log("Banco conectado com sucesso 🚀");
