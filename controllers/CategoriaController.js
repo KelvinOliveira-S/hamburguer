@@ -1,7 +1,9 @@
-import { Categoria, Produto } from "../models/index.js";
+import db from "../models/index.js";
+
+const { Categoria, Produto } = db;
 
 const CategoriaController = {
-
+  
   create: async (req, res) => {
     try {
       const categoria = await Categoria.create(req.body);

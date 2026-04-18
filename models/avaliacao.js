@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../Database.js";
+import sequelize from "./Database.js"; 
 
 export default class Avaliacao extends Model {
   static associate(models) {
@@ -10,26 +10,29 @@ export default class Avaliacao extends Model {
   }
 }
 
-Avaliacao.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  nota: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    validate: {
-      min: 1,
-      max: 5
+Avaliacao.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    nota: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 1,
+        max: 5
+      }
+    },
+    pedido_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   },
-  pedido_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false
+  {
+    sequelize,
+    tableName: 'avaliacoes',
+    timestamps: true // MELHOR deixar true
   }
-}, {
-  sequelize,
-  tableName: 'avaliacoes',
-  timestamps: false
-});
+);

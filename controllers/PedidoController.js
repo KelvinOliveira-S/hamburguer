@@ -1,5 +1,6 @@
-import { Pedido, Entrega, Avaliacao } from "../models/index.js";
+import db from "../models/index.js";
 
+const { Pedido, Entrega, Avaliacao } = db;
 const PedidoController = {
 
   create: async (req, res) => {
@@ -13,24 +14,20 @@ const PedidoController = {
  
   
   findAll: async (req, res) => {
-    try {
-      const pedidos = await Pedido.findAll({
-        include: [
-          { model: Entrega, as: 'entregas' },
-          { model: Avaliacao, as: 'avaliacoes' }
-        ]
-      });
+  try {
+    const pedidos = await Pedido.findAll({
+      include: [
+        { model: Entrega, as: 'entregas' },
+        { model: Avaliacao, as: 'avaliacoes' }
+      ]
+    });
 
-      if (pedidos.length === 0) {
-        return res.status(404).json({ error: "Não há pedidos" });
-      }
+    res.status(200).json(pedidos);
 
-      res.status(200).json(pedidos);
-
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+},
 
   findById: async (req, res) => {
   try {
